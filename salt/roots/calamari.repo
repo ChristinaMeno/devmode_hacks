@@ -1,0 +1,6 @@
+[calamari]
+name=localrepo
+baseurl=file:///root/packages/CentOS-el7
+enabled=1
+gpgcheck=0
+skip_if_unavailable=True
