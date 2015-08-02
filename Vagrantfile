@@ -19,7 +19,19 @@ Vagrant.configure('2') do |config|
     provider.size = '2gb'
   end
   config.vm.provider :vmware_fusion do |provider, override|
-    override.vm.box = 'chef/centos-7.0'
+    #override.vm.box = 'chef/centos-7.0'
+    #override.vm.box = "chef/fedora-21"
+    # override.vm.box = "hashicorp/precise64"
+    override.vm.box = "boxcutter/ubuntu1404"
+
+  end
+  config.vm.provider :virtualbox do |provider, override|
+    #override.vm.box = "box-cutter/fedora21"
+    override.vm.hostname = 'vagrant-ubuntu-trusty-64'
+    override.vm.box = "ubuntu/trusty64"
+    provider.memory = 1024
+    provider.cpus = 2
+    #override.vm.box = "ubuntu/vivid64"
 
   end
 
@@ -28,9 +40,10 @@ Vagrant.configure('2') do |config|
     ## Use all the defaults:
     config.vm.provision :salt do |salt|
       salt.minion_config = "salt/minion"
+      salt.bootstrap_options = "-P"
       salt.run_highstate = true
 
-    end
+  end
 
   # setup salt on our own terms
   # config.vm.provision "shell", path: "script.sh"

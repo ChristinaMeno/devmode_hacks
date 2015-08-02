@@ -1,38 +1,38 @@
-requirements:
-  cmd.run:
-    - name: yum -y install pyOpenSSL.x86_64
+base:
+  pkgrepo.managed:
+    - humanname: Saltstack PPA
+    - name: ppa:saltstack/salt
+    - dist: trusty
+    - require_in:
+      - pkg: salt-master
+      - pkg: salt-minion
+
+salt-master:
+  pkg.installed
+
+salt-minion:
+  pkg.installed
+
+git:
+  pkg.installed:
+    - pkgs:
+      - git
 
 get_packages:
   git:
     - latest
-    - rev: wip-f21-devmode
+    - rev: wip-stripped-down
     - name: https://github.com/ceph/calamari.git
-    - target: /home/gmeno/the_source
-    - user: gmeno
+    - target: /home/vagrant/the_source
+    - user: vagrant
     - require:
-      - cmd: requirements
-      - pkg: packages
-      - user: gmeno
-
-packages:
-  pkg.installed:
-    - pkgs:
-      - createrepo
-      - git
-
-gmeno:
-  user.present:
-    - fullname: Fred Jones
-    - shell: /bin/bash
-    - home: /home/gmeno
-    - groups:
-      - wheel
+      - pkg: git
 
 bootstrap_devmode:
   cmd.wait:
-    - name: /home/gmeno/the_source/vps_bootstrap.sh
-    - user: gmeno
-    - cwd: /home/gmeno/the_source
+    - name: /home/vagrant/the_source/vps_bootstrap.sh
+    - user: vagrant
+    - cwd: /home/vagrant/the_source
     - require:
         - git: get_packages
 
